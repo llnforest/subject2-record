@@ -74,7 +74,7 @@ public class SignAspect {
             });
             sb.append(sign.key());
             log.info(sb.toString());
-//            String a = DigestUtil.md5Hex(sb.toString());
+            String a = DigestUtil.md5Hex(sb.toString());
 //            String b = SecureUtil.md5(sb.toString());
 //            String sign2 = Md5Crypt.md5Crypt(sb.toString().getBytes(StandardCharsets.UTF_8));
 //            log.info(sign2);
