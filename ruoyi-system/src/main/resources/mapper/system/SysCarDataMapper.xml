@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysCarDataMapper">
+
+    <resultMap type="com.ruoyi.system.domain.SysCarData" id="SysCarDataResult">
+        <result property="id" column="id"/>
+        <result property="carNo" column="car_no"/>
+        <result property="carNum" column="car_num"/>
+        <result property="status" column="status"/>
+        <result property="queueNum" column="queue_num"/>
+        <result property="circleTimes" column="circle_times"/>
+        <result property="startTime" column="start_time"/>
+        <result property="endTime" column="end_time"/>
+        <result property="trueStartTime" column="true_start_time"/>
+        <result property="trueEndTime" column="true_end_time"/>
+        <result property="createTime" column="create_time"/>
+        <result property="createBy" column="create_by"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateBy" column="update_by"/>
+    </resultMap>
+
+
+</mapper>
