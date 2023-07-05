@@ -45,7 +45,7 @@ public class ApiController {
     @RepeatSubmit
     @Sign
     public R<CarVo> start(@Validated @RequestBody CarDto dto){
-        return R.ok("首圈开启成功",carService.start(dto));
+        return R.ok("第1圈开启成功",carService.start(dto));
     }
 
     /**

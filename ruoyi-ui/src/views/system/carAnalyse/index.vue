@@ -69,9 +69,17 @@
       </el-table-column>
       <el-table-column label="车辆ID" align="center" prop="carId" v-if="true" min-width="70"/>
       <el-table-column label="车辆编号" align="center" prop="carNo"  min-width="80"/>
-      <el-table-column label="车牌号码" align="center" prop="carNum"  min-width="90"/>
-      <el-table-column label="练车人次" align="center" prop="queueNum"  min-width="90"/>
-      <el-table-column label="训练时长" align="center" prop="timeLong"  min-width="70"/>
+      <el-table-column label="车牌号码" align="center" prop="carNum"  min-width="120"/>
+      <el-table-column label="练车人次" align="center" prop="queueNum"  min-width="120">
+        <template slot-scope="scope">
+          <span>{{ scope.row.queueNum }}次</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="训练时长" align="center" prop="timeLong"  min-width="120">
+        <template slot-scope="scope">
+          <span>{{ (scope.row.timeLong/60).toFixed(1) }}小时</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作人" align="center" prop="createBy"  min-width="80"/>
     </el-table>
 

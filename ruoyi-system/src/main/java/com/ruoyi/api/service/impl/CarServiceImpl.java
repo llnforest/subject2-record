@@ -48,10 +48,10 @@ public class CarServiceImpl implements ICarService {
         if(sysCarDataVo == null) throw new RuntimeException("车辆不存在或状态不可用");
         //判断车辆使用状态
         handleUseStatus(sysCarDataVo,dto);
-        carVo.setCarNo(dto.getCarNo());
-        carVo.setCircleNum("1");
-        carVo.setEndTime(DateUtil.offsetMinute(new Date(dto.getTime()),Integer.valueOf(CacheUtils.get(CacheNames.SYS_CONFIG,"sys_car_delay"))));
-        return carVo;
+//        carVo.setCarNo(dto.getCarNo());
+//        carVo.setCircleNum("1");
+//        carVo.setEndTime(DateUtil.offsetMinute(new Date(dto.getTime()),Integer.valueOf(CacheUtils.get(CacheNames.SYS_CONFIG,"sys_car_delay"))));
+        return null;
     }
 
     @Override
@@ -86,9 +86,9 @@ public class CarServiceImpl implements ICarService {
      * @param carDto       汽车dto
      */
     private void handleFinishStarting(SysCarDataVo sysCarDataVo,CarDto carDto){
-        if(carDto.getTime() < sysCarDataVo.getEndTime().getTime()){
+        if(new Date().getTime() < sysCarDataVo.getTrueEndTime().getTime()){
             throw new SuccessException("时间未到,结束成功");
-        }else if(sysCarDataVo.getCircleTimes() >= (Long) CacheUtils.get(CacheNames.SYS_CONFIG,"sys_car_circle")){
+        }else if(sysCarDataVo.getCircleTimes() < Long.valueOf(CacheUtils.get(CacheNames.SYS_CONFIG,"sys_car_circle"))){
             throw new SuccessException("圈数未满足,结束成功");
         }else{
             updateStatusToEnd(sysCarDataVo.getId());
@@ -126,12 +126,12 @@ public class CarServiceImpl implements ICarService {
      * @param carDto       汽车dto
      */
     private void handleUseStatusStarting(SysCarDataVo sysCarDataVo,CarDto carDto){
-        if(carDto.getTime() < sysCarDataVo.getEndTime().getTime()){
+        if(new Date().getTime() < sysCarDataVo.getTrueEndTime().getTime()){
             updateStatusToContinue(sysCarDataVo);
-            throw new SuccessException("时间未到,继续训练");
+            throw new SuccessException("时间未到,继续训练第"+sysCarDataVo.getCircleTimes()+"圈");
         }else if(sysCarDataVo.getCircleTimes() < new Long(CacheUtils.get(CacheNames.SYS_CONFIG,"sys_car_circle"))){
             updateStatusToContinue(sysCarDataVo);
-            throw new SuccessException("圈数未满足,继续训练");
+            throw new SuccessException("圈数未满足,继续训练第"+sysCarDataVo.getCircleTimes()+"圈");
         }else{
             updateStatusToEnd(sysCarDataVo.getId());
             handleUseStatusUnStart(sysCarDataVo,carDto);
@@ -187,8 +187,7 @@ public class CarServiceImpl implements ICarService {
         sysCarRecord.setTimeLong(new Long(timeLong));
         sysCarRecord.setAnalyseDate(DateUtil.date());
         if(recordMapper.updateById(sysCarRecord) < 1)  throw new RuntimeException("开始人次时异常,开始失败");
-        // 发送结束指令
-        webSocketServer.sendMessage(sysCarDataVo.getCarNo()+"号车"+sysCarData.getCarNum()+"已结束训练");
+
     }
 
     /**
@@ -217,7 +216,7 @@ public class CarServiceImpl implements ICarService {
         sysCarRecord.setTimeLong(DateUtil.between(new Date(),sysCarRecordVo.getStartTime(), DateUnit.MINUTE));
         if(recordMapper.updateById(sysCarRecord) < 1)  throw new RuntimeException("结束人次时异常,结束失败");
         // 发送结束指令
-
+        webSocketServer.sendMessage(sysCarRecordVo.getCarNo()+"号车"+sysCarData.getCarNum()+"已结束训练");
     }
 
     private LambdaQueryWrapper<SysCarData> buildQueryWrapper(CarDto dto) {

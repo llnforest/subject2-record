@@ -92,7 +92,8 @@ public class SysCarAnalyseServiceImpl implements ISysCarAnalyseService {
         Map<String, Object> params = bo.getParams();
         QueryWrapper<SysCarAnalyse> lqw = Wrappers.query();
         lqw.eq(bo.getCarId() != null, "car_id", bo.getCarId());
-        lqw.eq("status", 2L);
+//        lqw.eq("status", 2L);
+        lqw.in("status", 1L,2L);
         lqw.between(params.get("beginAnalyseDate") != null && params.get("endAnalyseDate") != null,
             "analyse_date" ,params.get("beginAnalyseDate"), params.get("endAnalyseDate"));
         lqw.eq(StringUtils.isNotBlank(bo.getCreateBy()), "create_by", bo.getCreateBy());

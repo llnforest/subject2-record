@@ -81,7 +81,11 @@
           <span>{{ parseTime(scope.row.endTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="训练时长" align="center" prop="timeLong"  min-width="70"/>
+      <el-table-column label="训练时长" align="center" prop="timeLong"  min-width="70">
+        <template slot-scope="scope">
+          <span>{{ scope.row.timeLong }}分钟</span>
+        </template>
+      </el-table-column>
       <el-table-column label="创建时间" align="center" prop="createTime" min-width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}:{s}') }}</span>
